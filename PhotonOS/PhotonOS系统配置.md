@@ -77,7 +77,10 @@ systemctl enable docker
 3. 共享目录创建portainer_data目录 `mkdir /mnt/app-data/portainer_data`
 4. 部署portainer-ce
 
+* 用host模式总是只能监听ipv6，先用默认的bridge模式
+
 ```
-docker volume create portainer_data
-docker run -d -p 9000:9000 --name Portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/mnt/app-data/portainer_data portainer/portainer-ce
+docker run -it --network=host --restart=always -d --name portainer -p 19000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/app-data/app-configs/portainer:/data portainer/portainer-ce
+
+docker run -it --restart=always -d --name portainer -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/app-data/app-configs/portainer:/data portainer/portainer-ce
 ```
