@@ -2,6 +2,7 @@
 1. [B.A.T.M.A.N 维基百科介绍](https://en.wikipedia.org/wiki/B.A.T.M.A.N.) 
 2. [OpenWrt 官网教程](https://openwrt.org/docs/guide-user/network/wifi/mesh/batman)
 3. [国外OpenWrt大佬的教学视频](https://youtu.be/t4A0kfg2olo?si=24e6wxmG9ScBbj1J)
+4. [Open Mesh 官网教程](https://www.open-mesh.org/projects/batman-adv/wiki/Batman-adv-openwrt-config)
 
 # 基本原理讲解
 1. B.A.T.M.A.N的核心是通过 bat 接口来接管所有流量，然后由B.A.T.M.A.N协议来决定联网设备接入最合适的 bat 节点来实现无缝漫游
@@ -71,7 +72,7 @@
 * TODO
 
 
-# batctl 使用
+# batctl 使用 [命令说明](https://www.open-mesh.org/projects/batman-adv/wiki/Gateways)
 1. `batctl o` 查看所有节点
 2. `batctl gwl` 显示已知的网关列表及其相关属性
 3. `batctl gw server 100MBit/40MBit` 配置当前节点为网关，并设置上行带宽为 100 MBit/s，下行带宽为 40 MBit/s
@@ -83,3 +84,10 @@
 节点设备mac地址 节点名称
 ```
 5. `batclt tp <mac地址或者/etc/bat-hosts中mac地址对应的名称>` 测试链路质量
+
+# iperf3 使用
+* 测试udp `iperf3 -c <服务器IP> -u -b 10M`
+
+
+# 性能问题
+1. 主要是MTU的问题，现在基本上所有的网络设备默认的MTU都是1500，B.A.T.M.A.N协议会多32字节的头，所有连接bat设置的网络链路应该是全链路1536，否则分包很多导致性能严重下降
