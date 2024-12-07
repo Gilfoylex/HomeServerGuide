@@ -1,12 +1,24 @@
 ## 文档标注
 * <> 标记的一般是需要自己根据实际情况替换
 
+## 查看系统日志
+* `journalctl -n 50`
+
 ## 修改root密码
 1. 默认账户: root, 默认密码: changeme
 2. 先用 changeme 密码登录，登录之后继续输 changeme 修改为自己的密码
 
 ## 设置时区
 * 执行命令 `timedatectl set-timezone Asia/Hong_Kong`
+
+## 修改NTP服务器
+1. 修改时间同步的配置文件 `vi /etc/systemd/timesyncd.conf`
+```
+[Time]
+NTP=ntp1.aliyun.com
+```
+2. 重启网络 `systemctl restart systemd-networkd`
+3. 重启时间同步服务 `systemctl restart systemd-timesyncd`
 
 ## ESXI通过ova格式安装后扩容
 * ova格式安装的硬盘只有16GB大小，如果担心不够用就扩容 [官网扩容教程](https://vmware.github.io/photon/assets/files/html/3.0/photon_troubleshoot/expanding-disk-partition.html)
@@ -83,4 +95,35 @@ systemctl enable docker
 docker run -it --network=host --restart=always -d --name portainer -p 19000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/app-data/app-configs/portainer:/data portainer/portainer-ce
 
 docker run -it --restart=always -d --name portainer -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/app-data/app-configs/portainer:/data portainer/portainer-ce
+```
+
+## 开启ipv6
+* [Photon 网络配置手册](https://vmware.github.io/photon/assets/files/html/3.0/photon_admin/configuring-network-interfaces.html)
+1. Photon 的网络配置文件所在路径: /etc/systemd/network/<your network config name>.network
+
+* 把 IPv6AcceptRA 设置为 yes 就可以打开 ipv6 的ra功能，示例如下
+```
+[Match]
+Name=e*
+
+[Network]
+DHCP=yes
+IPv6AcceptRA=yes
+
+[DHCPv4]
+SendRelease=no
+```
+2. 如果是新增网络配置文件需要将其权限修改为 644，可以使用 chown 命令直接修改
+3. 使用 `systemctl restart systemd-networkd` 重启网络加载新配置
+
+## 配置DDNS
+1. 使用cloudflare 脚本 `git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git`
+2. 安装 `tdnf install cronie` 并创建定时任务 `crontab -e`
+```
+10 * * * * /bin/bash /root/<Your Shell Script>
+```
+3. 启动定时任务
+```
+sudo systemctl enable crond
+sudo systemctl start crond
 ```
