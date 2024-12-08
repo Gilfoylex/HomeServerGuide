@@ -1,2 +1,5 @@
-# 定时重启
-oepnwrt 网页计划任务界面添加 `0 4 * * * reboot` 每天凌晨4点重启
+# 定时重启 [官网教程](https://openwrt.org/docs/guide-user/base-system/cron)
+* `crontab -e` 编辑任务
+* `* 4 * * 1,3,5 reboot` 每周一、三、五凌晨4点重启
+* `crontab -l` 查看任务
+* `service cron restar` 保存并应用任务
