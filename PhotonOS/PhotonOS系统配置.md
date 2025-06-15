@@ -118,7 +118,7 @@ SendRelease=no
 
 ## 配置DDNS
 1. 使用cloudflare 脚本 `git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git`
-2. 安装 `tdnf install cronie` 并创建定时任务 `crontab -e`
+2. 安装 `tdnf install cronie` 并编辑创建定时任务 `crontab -e`
 ```
 10 * * * * /bin/bash /root/<Your Shell Script>
 ```
