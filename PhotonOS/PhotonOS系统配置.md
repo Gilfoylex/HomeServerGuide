@@ -127,3 +127,7 @@ SendRelease=no
 sudo systemctl enable crond
 sudo systemctl start crond
 ```
+
+## 配置阿里云ddns
+1. 安装 `nslookup` 命令需要的软件包: `tdnf install bindutils`
+2. 参考上面配置ddns的方式创建定义任务执行aliyun-ddns的脚本，脚本自己上网找
