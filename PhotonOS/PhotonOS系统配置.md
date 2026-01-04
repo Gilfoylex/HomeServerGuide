@@ -120,7 +120,7 @@ SendRelease=no
 1. 使用cloudflare 脚本 `git clone https://github.com/K0p1-Git/cloudflare-ddns-updater.git`
 2. 安装 `tdnf install cronie` 并编辑创建定时任务 `crontab -e`
 ```
-10 * * * * /bin/bash /root/<Your Shell Script>
+*/10 * * * * /bin/bash /root/<Your Shell Script>
 ```
 3. 启动定时任务
 ```
